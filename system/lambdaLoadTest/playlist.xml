@@ -17,6 +17,20 @@
 			<group>system</group>
 		</groups>
 	</test>
+	<test>
+		<testCaseName>LambdaLoadTest</testCaseName>
+		<variations>
+			<variation>NoOptions</variation>
+		</variations>
+		<command>$(SYSTEMTEST_CMD_TEMPLATE) -test=LambdaLoadTest; \
+	$(TEST_STATUS)</command>
+		<levels>
+			<level>sanity</level>
+		</levels>
+		<groups>
+			<group>system</group>
+		</groups>
+	</test>
 	<!-- Exclude LambdaLoad test on Linux x64 non-compressedrefs sdks for OpenJ9 builds only,
 		Reason: https://github.com/eclipse/openj9/issues/2209)-->
 	<test>
