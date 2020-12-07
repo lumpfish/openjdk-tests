@@ -18,6 +18,20 @@
 		</groups>
 	</test>
 	<test>
+		<testCaseName>ParallelStreamsLoadTest</testCaseName>
+		<variations>
+			<variation>NoOptions</variation>
+		</variations>
+		<command>$(SYSTEMTEST_CMD_TEMPLATE) -test=ParallelStreamsLoadTest; \
+	$(TEST_STATUS)</command>
+		<levels>
+			<level>sanity</level>
+		</levels>
+		<groups>
+			<group>system</group>
+		</groups>
+	</test>
+	<test>
 		<testCaseName>LambdaLoadTest</testCaseName>
 		<variations>
 			<variation>NoOptions</variation>
