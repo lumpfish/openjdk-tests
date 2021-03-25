@@ -334,7 +334,7 @@
 		<groups>
 			<group>system</group>
 		</groups>
-		<platformRequirements>^os.aix</platformRequirements>
+		<!-- <platformRequirements>^os.aix</platformRequirements> -->
 	</test>
 	<test>
 		<testCaseName>PatMod_AppMod</testCaseName>
@@ -414,7 +414,8 @@
 		<groups>
 			<group>system</group>
 		</groups>
-		<platformRequirements>^os.aix,^os.zos</platformRequirements>
+		<!-- <platformRequirements>^os.aix,^os.zos</platformRequirements> -->
+		<platformRequirements>^os.zos</platformRequirements>
 	</test>
 	<!-- Temporarily excluding from z/OS due to : jdk11-zos/issues/568 -->
 	<test>
