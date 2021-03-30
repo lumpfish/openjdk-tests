@@ -729,9 +729,6 @@
 	</test>
 	<test>
 		<testCaseName>CLStressLayers</testCaseName>
-		<disabled>
-			<comment>https://github.com/AdoptOpenJDK/openjdk-systemtest/issues/197</comment>
-		</disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
@@ -751,9 +748,6 @@
 	</test>
 	<test>
 		<testCaseName>CLStressCRI</testCaseName>
-		<disabled>
-			<comment>https://github.com/AdoptOpenJDK/openjdk-systemtest/issues/197</comment>
-		</disabled>
 		<variations>
 			<variation>Mode150</variation>
 			<variation>Mode650</variation>
