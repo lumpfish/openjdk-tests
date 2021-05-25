@@ -131,8 +131,8 @@ If you can't find anything wrong with the test case, then maybe the jdk has a bu
 The jdk itself can be forked and modified and built at AdoptOpenJDK by adding build parameters to the jdk build pipeline job - e.g. In https://ci.adoptopenjdk.net/job/build-scripts/job/openjdk8-pipeline/build
 - Specify the platform(s) you want to build
 - Set 'releaseType' to 'Nightly without Publish' (this means the build will be attached to the job, but not be published to github)
-- For the BUILD_ARGS param, specify '-b <yourbranch> -r <yourrepo>' (make sure <yourrepo> is http: protocol, and does not have '.git' on the end)
-- Set check whether 'Enable tests' is set correctly.  You probably just want to create a build and use the link to run some Grinders, not to run all the pipeline tests after the build.
+- For the BUILD_ARGS param, specify '-b your_branch -r your_repository' (make sure your_repository is http: protocol, and does not have '.git' on the end)
+- Set check whether 'Enable tests' is set correctly.  You probably just want to create a build and use the link to run some Grinders, not to run all the pipeline test jobs after the jdk build job.
 
 ### Step 4 - Submit a fix
 
