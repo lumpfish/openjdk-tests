@@ -1,6 +1,6 @@
-##Triaging
+## Triaging
 
-###Step 1. Find failures
+### Step 1. Find failures
 
 - Find a build in TRSS (https://trss.adoptopenjdk.net/)
 - Use the various TRSS views and / or Jenkins job logs to locate failing tests
@@ -10,7 +10,7 @@
 -- Are the same tests failing everywhere (may indicate an infrastructure issue, may indicate a cross platform regression, may indicate a new / changed test which doesn't work, or doesn't work in our environment) or are they unique to a platform / release (indicates machine / platform specific setup issues, platform / release specific test case issues or actual jdk issues)
 - When you've honed in (what looks like) a single problem.....
 
-###Step 2 - Raise an issue
+### Step 2 - Raise an issue
 
 Might the failure be due to infrastructure?
 - Look for messages from the tests about expected resources not being available (e.g. expected core dump not found)
@@ -50,7 +50,7 @@ For functional or system test failures where the failure is unique to openj9 (th
 
 For hotspot failures and openj9 openjdk failures (or if you just want to do more failure analysis yourself) some more digging will be needed........
 
-###Step 3 - Try to establish the reason for the failure
+### Step 3 - Try to establish the reason for the failure
 
 These are the most likely candidates
 1. The test environment (machine setup (or lack of))
@@ -60,7 +60,7 @@ These are the most likely candidates
 These are less likely candidates
 1. Corrupt / incomplete jdk build (e.g. executables not executable, excutables not signed, packages 'missing).
 
-####Is it the test environment?
+#### Is it the test environment?
 
 - Does the test pass on one machine but not another?
 - Does the test pass on one operating system but not another?
@@ -70,7 +70,7 @@ If it is the test environment, update the issue with what you know - 'Fails on m
 
 Unless you have machine access you will probably need help from the infrastructure team to resolve and fix a machine setup issue.
 
-####Is it the test case?
+#### Is it the test case?
 
 If a test passes on hotspot but fails on openj9, then the failure will be due to some sort of difference in behaviour between the implementations.  It may be a bug, or an assumption by the test case that the hotspot behaviour is the only possible behaviour, or the test uses options which are hotspot specific and not valid for openj9.
 
@@ -117,7 +117,7 @@ To make changes and rerun via a grinder:
 - When the job runs the tests will be retrieved from your fork / branch rather than the default openjdk source branch
 - If you had added Syste,out.println() statements to the test (and the test fails) your new outpt will appear in the Grinder job log
 
-####Is it the jdk?
+#### Is it the jdk?
 
 If you can't find anything wrong with the test case, then the failure suggests the jdk may have a bug.
 
@@ -127,7 +127,7 @@ The jdk itself can be forked and modified and built at AdoptOpenJDK by adding bu
 3. For the BUILD_ARGS param, specify '-b <yourbranch> -r <yourrepo>' (make sure <yourrepo> is http: protocol, and does not have '.git' on the end)
 4. Set check whether 'Enable tests' is set correctly.  You probably just want to create a build and use the link to run some Grinders, not to run all the pipeline tests after the build.
 
-####Step 4 - Submit a fix
+### Step 4 - Submit a fix
 
 If after your investigations you have a solution for the failure you can submit your change via a PR or for openjdk changes (need some instructions from openjdk contributors / committers)
 
