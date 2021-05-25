@@ -3,6 +3,10 @@
 ### Step 1. Find failures
 
 - Find a build in TRSS (https://trss.adoptopenjdk.net/)
+  - There are two sets of timed pipelines
+    - 'Nightly' builds - run on an not-quite-nightly schedule
+    - 'Weekly' builds - run over a weekend.  More tests are run on these builds (the 'extended' test suites are added) - so expect more failures.
+    - The jdk build part of the pipeline is the same in both types of build
 - Use the various TRSS views and / or Jenkins job logs to locate failing tests
 - Every test belongs to a test target (which is the level at which TRSS analysis is done)
 - For openjdk tests, there are many tests within a test target. If the test target has failed you need to look for "TEST: " in the job log to find the failing test(s).
@@ -40,7 +44,7 @@ Is the failure aleady known? Look in
 
 If it's not already known, raise an issue:
 - If it's obviously a machine which needs fixing, raise in https://github.com/adoptium/infrastructure/issues
-- If it's obviously and eclipse-openj9 issue (doesn't fail on hotspot) - raise in https://github.com/eclipse-openj9/openj9/issues
+- If it's obviously an eclipse-openj9 issue (doesn't fail on hotspot) - raise in https://github.com/eclipse-openj9/openj9/issues
 - If it's a systemtest issue, raise in https://github.com/adoptium/aqa-systemtest
 
 If it is already known:
@@ -60,7 +64,7 @@ These are the most likely candidates
 3. The jdk code
 
 These are less likely candidates
-1. Corrupt / incomplete jdk build (e.g. executables not executable, excutables not signed, packages 'missing).
+1. Corrupt / incomplete jdk build (e.g. executables not executable, excutables not signed, packages 'missing').
 
 #### Is it the test environment?
 
@@ -80,16 +84,16 @@ Look for the test output which is the reason for the failure - likely to be a me
 
 There are two ways you can rerun a test - on the AdoptOpenJDK / Adoptium Jenkins farm via the 'Grinder' job, or locally on a machine you own.  If you find you need to add debugging to the test case and / or the jdk then for working for instance on VirtualBox linux on your laptop may well be the easiest / fastest way to make progress.
 
-To rerun a test in a grinder (https://ci.adoptopenjdk.net/view/Test_grinder/job/Grinder/build):
+##### Rerunning a test in a grinder (https://ci.adoptopenjdk.net/view/Test_grinder/job/Grinder/build):
 
-To rerun a test target, go to the 'Test Selection Parameters' section in the Grinder 'Build with Parameters' page.
-Set 'BUILD_LIST' to functional, openjdk or system according to the test suite the target is in.
-Set 'TARGET' to the target name (e.g. jdk_math, jdk_math_0, Minimix_5m)
-Click the 'Build' button
+The 'unit of execution' for a 'functional' or 'system' test is the test target.  The target target can also be used to run openjdk tests, but the openjdk targets run a lot of subtests and it is likely you will want to rerun just a single failing subtest (the output from the failing test is printed to the Jenkins joblog - the output from passing tests is deleted).  To find an individual failing subtest look for 'TEST: ' (note the trailing space) in the Jenkins job log.
 
-The openjdk targets run a lot of subtests and it is likely you will want to rerun just a single failing subtest (the output from the failing test is printed to the Jenkins joblog - the output from passing tests is deleted).  To find an individual failing subtest look for 'TEST: ' (note the trailing space) in the Jenkins job log.
+1. To rerun a test target, go to the 'Test Selection Parameters' section in the Grinder 'Build with Parameters' page.
+- Set 'BUILD_LIST' to functional, openjdk or system according to the test suite the target is in.
+- Set 'TARGET' to the target name (e.g. jdk_math, jdk_math_0, Minimix_5m)
+- Click the 'Build' button
 
-To rerun an individual openjdk subtest:
+2. To rerun an individual openjdk subtest:
 - Set 'BUILD_LIST' to openjdk
 - Set 'TARGET' to jdk_custom
 - Set 'CUSTOM_TARGET' to the path to the test to rerun
@@ -100,24 +104,25 @@ then for `jdk8` specify the test as `jdk/test/sun/security/krb5/auto/ReplayCache
 and for `jdk11+` specify the test as `test/jdk/sun/security/krb5/auto/ReplayCacheTestProc.java`
 (the top level 'jdk' and 'test' directories are reversed.
 
+3. To make changes to the test case code and then rerun via a grinder:
+
 The test case code can be found on github:
 - openjdk tests: https://github.com/adoptium/jdk8u/, https://github.com/adoptium/jdk11u/, etc.)
 - functional tests: https://github.com/eclipse-openj9/openj9/
 - system tests: https://github.com/adoptium/aqa-systemtest, https://github.com/adoptium/STF
 
-It is likely that you will want to add some code to get more information from the failing test (e.g. to print lines to track the test execution path or print the value of certain variables at various points during execution).  The general principle for this is to fork your own copy of the git repository containing the test, create a branch for your changes, make the changes, and run the amended test.
+In many cases you will want to add some code to get more information from the failing test (e.g. to print lines to track the test execution path or print the value of certain variables at various points during execution).  The general principle for this is to fork your own copy of the git repository containing the test, create a branch for your changes, make the changes, and run the amended test.
 
-To make changes and rerun via a grinder:
-1. Fork the repository containing the test
-2. Clone your fork locally (e.g. to your laptop)
-3. Create a branch for your changes (e.g. fix_ReplayCacheTestProc)
-4. Make some changes in your branch
-5. Commit your changes and push them to your fork
-6. Rerun the test in a Grinder, this time telling the Grinder job to use your fork / branch
-- In the 'Test Repositories Parameters' section of https://ci.adoptopenjdk.net/view/Test_grinder/job/Grinder/build, change the parameter
-- So if you had changed an openjdk test, you would set JDK_REPO to you github repository fork and JDK_BRANCH to the name of the branch with your changes.
-- When the job runs the tests will be retrieved from your fork / branch rather than the default openjdk source branch
-- If you had added Systemout.println() statements to the test (and the test fails) your new outpt will appear in the Grinder job log
+- Fork the repository containing the test
+- Clone your fork locally (e.g. to your laptop)
+- Create a branch for your changes (e.g. fix_ReplayCacheTestProc)
+- Make some changes in your branch
+- Commit your changes and push them to your fork
+- Rerun the test in a Grinder, this time telling the Grinder job to use your fork / branch
+  - In the 'Test Repositories Parameters' section of https://ci.adoptopenjdk.net/view/Test_grinder/job/Grinder/build, change the parameter
+  - So if you had changed an openjdk test, you would set JDK_REPO to you github repository fork and JDK_BRANCH to the name of the branch with your changes.
+  - When the job runs the tests will be retrieved from your fork / branch rather than the default openjdk source branch
+  - If you had added Systemout.println() statements to the test (and the test fails) your new outpt will appear in the Grinder job log
 
 #### Is it the jdk?
 
