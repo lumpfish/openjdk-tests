@@ -6,8 +6,8 @@
 - Use the various TRSS views and / or Jenkins job logs to locate failing tests
 - Every test belongs to a test target (which is the level at which TRSS analysis is done)
 - For openjdk tests, there are many tests within a test target. If the test target has failed you need to look for "TEST: " in the job log to find the failing test(s).
-- Do a quick review of all the tests for a build - your looking for an overall appreciation of what is failing
--- Are the same tests failing everywhere (may indicate an infrastructure issue, may indicate a cross platform regression, may indicate a new / changed test which doesn't work, or doesn't work in our environment) or are they unique to a platform / release (indicates machine / platform specific setup issues, platform / release specific test case issues or actual jdk issues)
+- Do a quick review of all the test failures for a build - you are looking for an overall appreciation of what is failing
+  - Are the same tests failing everywhere (may indicate an infrastructure issue, may indicate a cross platform regression, may indicate a new / changed test which doesn't work, or doesn't work in our environment) or are they unique to a platform / release (indicates machine / platform specific setup issues, platform / release specific test case issues or actual jdk issues)
 - When you've honed in (what looks like) a single problem.....
 
 ### Step 2 - Raise an issue
@@ -22,7 +22,7 @@ Establish where / when the test passes and fails
 - Does the test fail if you rerun on the same or a different machine?
 - Does the test also fail at ci.eclipse.org/openj9?
 - Does the test fail on both hotspot and openj9?  If it only fails on one then it may be a jvm issue. (Or it may be a test case issue!)
--- Not all tests run on both hotspot and openj9. In particular, many more 'functional' tests are run on openj9 (thety are the functional tests written by openj9 to test openj9), and many more 'openjdk' tests are run on hotspot (they are the tests written by openjdk to test openjdk and may rely on openjdk / hotspot behaviour).  So if a test fails on openj9 or hotspot but does not fail on the other implementation it might be because it is not run on the other implementation.
+  - Not all tests run on both hotspot and openj9. In particular, many more 'functional' tests are run on openj9 (thety are the functional tests written by openj9 to test openj9), and many more 'openjdk' tests are run on hotspot (they are the tests written by openjdk to test openjdk and may rely on openjdk / hotspot behaviour).  So if a test fails on openj9 or hotspot but does not fail on the other implementation it might be because it is not run on the other implementation.
 
 Is the test new?
 - Useful to know - it never have been run in the failing environment - it might just not work.
@@ -88,20 +88,20 @@ Click the 'Build' button
 The openjdk targets run a lot of subtests and it is likely you will want to rerun just a single failing subtest (the output from the failing test is printed to the Jenkins joblog - the output from passing tests is deleted).  To find an individual failing subtest look for 'TEST: ' (note the trailing space) in the Jenkins job log.
 
 To rerun an individual openjdk subtest:
-Set 'BUILD_LIST' to openjdk
-Set 'TARGET' to jdk_custom
-Set 'CUSTOM_TARGET' to the path to the test to rerun
-- This is different for jdk8 vs. jdk11+ because jdk directory structure changed after jdk8
-- If the search line for the failing test found in the job log is
-TEST: sun/security/krb5/auto/ReplayCacheTestProc.java
-then for jdk8 specify the test as jdk/test/sun/security/krb5/auto/ReplayCacheTestProc.java
-and for jdk11+ specify the test as test/jdk/sun/security/krb5/auto/ReplayCacheTestProc.java
+- Set 'BUILD_LIST' to openjdk
+- Set 'TARGET' to jdk_custom
+- Set 'CUSTOM_TARGET' to the path to the test to rerun
+  - This is different for jdk8 vs. jdk11+ because jdk directory structure changed after jdk8
+  - If the search line for the failing test found in the job log is
+`TEST: sun/security/krb5/auto/ReplayCacheTestProc.java`
+then for `jdk8` specify the test as `jdk/test/sun/security/krb5/auto/ReplayCacheTestProc.java`
+and for `jdk11+` specify the test as `test/jdk/sun/security/krb5/auto/ReplayCacheTestProc.java`
 (the top level 'jdk' and 'test' directories are reversed.
 
 The test case code can be found on github:
-openjdk tests: https://github.com/adoptium/jdk8u/, https://github.com/adoptium/jdk11u/, etc.)
-functional tests: https://github.com/eclipse-openj9/openj9/
-system tests: https://github.com/adoptium/aqa-systemtest, https://github.com/adoptium/STF
+- openjdk tests: https://github.com/adoptium/jdk8u/, https://github.com/adoptium/jdk11u/, etc.)
+- functional tests: https://github.com/eclipse-openj9/openj9/
+- system tests: https://github.com/adoptium/aqa-systemtest, https://github.com/adoptium/STF
 
 It is likely that you will want to add some code to get more information from the failing test (e.g. to print lines to track the test execution path or print the value of certain variables at various points during execution).  The general principle for this is to fork your own copy of the git repository containing the test, create a branch for your changes, make the changes, and run the amended test.
 
@@ -115,17 +115,17 @@ To make changes and rerun via a grinder:
 - In the 'Test Repositories Parameters' section of https://ci.adoptopenjdk.net/view/Test_grinder/job/Grinder/build, change the parameter
 - So if you had changed an openjdk test, you would set JDK_REPO to you github repository fork and JDK_BRANCH to the name of the branch with your changes.
 - When the job runs the tests will be retrieved from your fork / branch rather than the default openjdk source branch
-- If you had added Syste,out.println() statements to the test (and the test fails) your new outpt will appear in the Grinder job log
+- If you had added Systemout.println() statements to the test (and the test fails) your new outpt will appear in the Grinder job log
 
 #### Is it the jdk?
 
-If you can't find anything wrong with the test case, then the failure suggests the jdk may have a bug.
+If you can't find anything wrong with the test case, then maybe the jdk has a bug.
 
-The jdk itself can be forked and modified and built at AdoptOpenJDK by adding build parametersd to the jdk build pipeline job - e.g. In https://ci.adoptopenjdk.net/job/build-scripts/job/openjdk8-pipeline/build
-1. Specify the platform(s) you want to build
-2. Set 'releaseType' to 'Nightly without Publish' (this means the build will be attached to the job, but not be published to github)
-3. For the BUILD_ARGS param, specify '-b <yourbranch> -r <yourrepo>' (make sure <yourrepo> is http: protocol, and does not have '.git' on the end)
-4. Set check whether 'Enable tests' is set correctly.  You probably just want to create a build and use the link to run some Grinders, not to run all the pipeline tests after the build.
+The jdk itself can be forked and modified and built at AdoptOpenJDK by adding build parameters to the jdk build pipeline job - e.g. In https://ci.adoptopenjdk.net/job/build-scripts/job/openjdk8-pipeline/build
+- Specify the platform(s) you want to build
+- Set 'releaseType' to 'Nightly without Publish' (this means the build will be attached to the job, but not be published to github)
+- For the BUILD_ARGS param, specify '-b <yourbranch> -r <yourrepo>' (make sure <yourrepo> is http: protocol, and does not have '.git' on the end)
+- Set check whether 'Enable tests' is set correctly.  You probably just want to create a build and use the link to run some Grinders, not to run all the pipeline tests after the build.
 
 ### Step 4 - Submit a fix
 
@@ -134,7 +134,7 @@ If after your investigations you have a solution for the failure you can submit 
 Refer to the section below if the 'fix' is to exclude the test from future runs.
 
 
-###Excluding and reinstating tests
+### Excluding and reinstating tests
 
 Which tests are executed is controlled via metadata files in the https://github.com/adoptium/aqa-tests repository.
 Tests can be excluded in two ways:
