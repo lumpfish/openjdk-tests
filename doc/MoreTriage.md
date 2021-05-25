@@ -22,10 +22,12 @@ Establish where / when the test passes and fails
 - Does the test fail if you rerun on the same or a different machine?
 - Does the test also fail at ci.eclipse.org/openj9?
 - Does the test fail on both hotspot and openj9?  If it only fails on one then it may be a jvm issue. (Or it may be a test case issue!)
-  - Not all tests run on both hotspot and openj9. In particular, many more 'functional' tests are run on openj9 (thety are the functional tests written by openj9 to test openj9), and many more 'openjdk' tests are run on hotspot (they are the tests written by openjdk to test openjdk and may rely on openjdk / hotspot behaviour).  So if a test fails on openj9 or hotspot but does not fail on the other implementation it might be because it is not run on the other implementation.
+  - Not all tests run on both hotspot and openj9.
+  - In particular, many more 'functional' tests are excluded on hotspot than openj9 (they are the tests written by openj9 to test openj9), and many more 'openjdk' tests are excluded on openj9 that hotspot (they are the tests written by openjdk to test openjdk).  The excluded tests are not valid on the alternative implementation.
+  - So if a test fails on openj9 or hotspot but the same error cannot be seen on the other implementation it may simply be that the test is not run on the other implementation (check the exclusion list files).
 
 Is the test new?
-- Useful to know - it never have been run in the failing environment - it might just not work.
+- Useful to know - it may never have been run in the failing environment, or it might just not work.
 
 Is the failure aleady known? Look in
 - openjdk bugs database: https://bugs.openjdk.java.net/projects/JDK/issues
@@ -41,7 +43,7 @@ If it's not already known, raise an issue:
 - If it's obviously and eclipse-openj9 issue (doesn't fail on hotspot) - raise in https://github.com/eclipse-openj9/openj9/issues
 - If it's a systemtest issue, raise in https://github.com/adoptium/aqa-systemtest
 
-If it is known:
+If it is already known:
 - Are you able to add any more information to the existing issue which might help in debugging the failure?
 - It is useful just to add "also seen on platform / release xxx" if that information is missing
 - It is also useful to add "still occurring" so that people reviewing old issues know it still needs attention
