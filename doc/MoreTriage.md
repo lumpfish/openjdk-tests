@@ -8,7 +8,7 @@
     - 'Weekly' builds - run over a weekend.  More tests are run on these builds (the 'extended' test suites are added) - so expect more failures.
     - The jdk build part of the pipeline is the same in both types of build
 - Use the various TRSS views and / or Jenkins job logs to locate failing tests
-- Every test belongs to a test target (which is the level at which TRSS analysis is done)
+  - The TRSS 'Test suite analysis' view (click the coloured block for the job in the 'Grid' view) has some 'Action' icons.  Use 'Deep history' and 'All platforms' to help see whether the failure is restricted just certain machines or platforms. There is also an Action icon to take you to the Jenkins job which ran the test.
 - For openjdk tests, there are many tests within a test target. If the test target has failed you need to look for "TEST: " in the job log to find the failing test(s).
 - Do a quick review of all the test failures for a build - you are looking for an overall appreciation of what is failing
   - Are the same tests failing everywhere (may indicate an infrastructure issue, may indicate a cross platform regression, may indicate a new / changed test which doesn't work, or doesn't work in our environment) or are they unique to a platform / release (indicates machine / platform specific setup issues, platform / release specific test case issues or actual jdk issues)
@@ -155,3 +155,35 @@ Reasons a test may be excluded:
 The exclusion file requires that the reason for the exclusion (a link to a github issue) is provided for the exclusion.  This means that exclusions can be monitored to see whether they should be reinstated.  In some cases the 'reason' is not really known - the associated issue shows that the root cause of the test failure is not understood.  These exclusions are condidates for more investigation and potentially fixes to test cases or the jdk.
 
 Excluding or reinstating a test is a similar process to amending test cases - the https://github.com/adoptium/aqa-tests repository is forked / branched, changes are made in the branch, and the fork / branch is tested in a Grinder overriding the ADOPTOPENJDK_REPO and ADOPTOPENJDK_BRANCH parameters.  When the changes have been tested they can be merged into the master repository by submitted a Pull request (PR).
+
+### Searching for existing issues
+
+There are a few factors which mean that locating an already existing issue for a test failure is more difficult than one might expect:
+1. Because of the many different test suites run at adoptium, the test output format is not consistent across all the tests
+2. The different jdk implementations (hotspot, openj9) error messages are different
+3. Issues are raised by a variety of community members, one person may focus on one piece of information, another on a different (equally useful) piece.
+4. There are a number of different repositories where an issue might have been raised.
+
+If you can't find an issue after trying these options then raise a new one. If it turns out there really was an issue which you missed then eventually one or the other of them will become non-reproducible when a fix is made!
+
+1. Search for the failing test target
+- More useful for 'functional' and 'system' test failures than 'openjdk', since for openjdk tests a single test target runs many tests. (This means that if the target is mentioned in an issue it could well apply to a different test. Also raisers often mention only the failing test in the issue, not the test target.)
+
+2. Search for the openjdk failing test
+- For 'openjdk' test failure, search for the name of the failing test (its output is printed to the Jenkins job log with a heading "TEST: name_of_test"). This is the best search for these test failures.
+
+3. Search for text output in the failing job
+- Sometimes the same failure may affect a number of tests, in which case a specific test may not be mentioned (and if it is, may happen to have been a different test that the failure you're looking into).
+- Some examples of when this might be the best serach
+- `No space on device`
+- `Unable to connect to socket nnn`
+- `Expected dump file not found`
+- jdk crash report. Particularly for openj9, when the jdk terminates abnormally a crash dump summary is written to the joblog. The same crash might occur when running different tests, so searching for the same (or a very similar) summary might identify the issue.  An example issue for such a crash: https://github.com/eclipse-openj9/openj9/issues/12751
+
+Some search 'techniques':
+1. TRSS has a 'Possible issues' action button (available in the 'Test suite analysis' view (click the coloured block for the job in the 'Grid' view)
+- It doesn't cover all the search patterns listed above yet (primarily uses `test target`), but it does search multiple repositories at once.
+2. Search directly in github
+- The issues in individual repositories can be searched using the github web interface. github search is not necessarily intuitive (a search for `replaycachetestproc` will find an issue which mentions test `sun/security/krb5/auto/ReplayCacheTestProc.java` but a search for `replaycache` will not). It is possible to search multiple git repositories at once - see https://docs.github.com/en/github/searching-for-information-on-github/searching-on-github/searching-issues-and-pull-requests
+3. Google
+- Also works, good for finding issues in the openjdk bugs database (https://bugs.openjdk.java.net/projects/JDK/issues).
