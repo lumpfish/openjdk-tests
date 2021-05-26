@@ -146,8 +146,8 @@ Refer to the section below if the 'fix' is to exclude the test from future runs.
 
 Which tests are executed is controlled via metadata files in the https://github.com/adoptium/aqa-tests repository.
 Tests can be excluded in two ways:
-1. The makefile targets are defined in playlist.xml files - e.g. https://github.com/adoptium/aqa-tests/blob/master/openjdk/playlist.xml, https://github.com/adoptium/aqa-tests/blob/master/system/mathLoadTest/playlist.xml.  These files basically define the command line to be executed for that target.  An entire target can be excluded by removing it (or commenting it out) from this file.
-2. For openjdk tests, where each test target actually runs many tests, there is an additional test exclusion file.  This file is read by the openjdk (jtreg) test harness. Any tests included in it a not executed.  There is a separate file for each jdk release, and a separate file for hotspot vs. openj9 jdks - see https://github.com/adoptium/aqa-tests/tree/master/openjdk/excludes
+1. The makefile targets are defined in playlist.xml files - e.g. https://github.com/adoptium/aqa-tests/blob/master/openjdk/playlist.xml, https://github.com/adoptium/aqa-tests/blob/master/system/mathLoadTest/playlist.xml.  These files basically define the command line to be executed for that target.  An entire target can be excluded by removing it (or commenting it out) from this file.There are also xml tags to specify the target is 'disabled' or should only be run on some platforms / releases.
+2. For openjdk tests, where each test target actually runs many tests, there is an additional test exclusion file.  This file is read by the openjdk (jtreg) test harness. Any tests included in it a not executed.  There is a separate file for each jdk release, and a separate file for hotspot vs. openj9 jdks - see https://github.com/adoptium/aqa-tests/tree/master/openjdk/excludes.
 
 Reasons a test may be excluded:
 1. A test is no longer valid (e.g. because of a subsequent change to the jdk).
