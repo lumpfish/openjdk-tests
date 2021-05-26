@@ -79,7 +79,7 @@ Unless you have machine access you will probably need help from the infrastructu
 
 #### Is it the test case?
 
-If a test passes on hotspot but fails on openj9, then the failure will be due to some sort of difference in behaviour between the implementations.  It may be a bug, or an assumption by the test case that the hotspot behaviour is the only possible behaviour, or the test uses options which are hotspot specific and not valid for openj9.
+If a test passes on hotspot but fails on openj9 (or vice versa), then the failure will be due to some sort of difference in behaviour between the implementations.  It may be a bug, or an assumption by the test case that the hotspot (or openj9) behaviour is the only possible behaviour, or the test uses options which are hotspot (or openj9) specific and not valid for the alternative implementation.
 
 Look for the test output which is the reason for the failure - likely to be a message or thrown exception.  If you're lucky it may be obvious what is wrong - but more likely you'll want to rerun the test and add some debugging to pinpoint the cause of the failure.
 
