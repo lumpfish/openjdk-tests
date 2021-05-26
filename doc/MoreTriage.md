@@ -83,11 +83,11 @@ If a test passes on hotspot but fails on openj9 (or vice versa), then the failur
 
 Look for the test output which is the reason for the failure - likely to be a message or thrown exception.  If you're lucky it may be obvious what is wrong - but more likely you'll want to rerun the test and add some debugging to pinpoint the cause of the failure.
 
-There are two ways you can rerun a test - on the AdoptOpenJDK / Adoptium Jenkins farm via the 'Grinder' job, or locally on a machine you own.  If you find you need to add debugging to the test case and / or the jdk then for working for instance on VirtualBox linux on your laptop may well be the easiest / fastest way to make progress.
+There are two ways you can rerun a test - on the AdoptOpenJDK / Adoptium Jenkins farm via the 'Grinder' job, or locally on a machine you own.  If you find you need to add debugging to the test case and / or the jdk then working for instance on VirtualBox linux on your laptop may well be the easiest / fastest way to make progress.
 
 ##### Rerunning a test in a grinder (https://ci.adoptopenjdk.net/view/Test_grinder/job/Grinder/build):
 
-The 'unit of execution' for a 'functional' or 'system' test is the test target.  The target target can also be used to run openjdk tests, but the openjdk targets run a lot of subtests and it is likely you will want to rerun just a single failing subtest (the output from the failing test is printed to the Jenkins joblog - the output from passing tests is deleted).  To find an individual failing subtest look for 'TEST: ' (note the trailing space) in the Jenkins job log.
+The 'unit of execution' for a 'functional' or 'system' test is the test target.  The test target can also be used to run openjdk tests, but the openjdk targets run a lot of subtests and it is likely you will want to rerun just a single failing subtest (the output from the failing test is printed to the Jenkins joblog - the output from passing tests is deleted).  To find an individual failing subtest look for 'TEST: ' (note the trailing space) in the Jenkins job log.
 
 1. To rerun a test target, go to the 'Test Selection Parameters' section in the Grinder 'Build with Parameters' page.
 - Set 'BUILD_LIST' to functional, openjdk or system according to the test suite the target is in.
