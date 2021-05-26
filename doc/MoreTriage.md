@@ -103,7 +103,7 @@ The 'unit of execution' for a 'functional' or 'system' test is the test target. 
 `TEST: sun/security/krb5/auto/ReplayCacheTestProc.java`
 then for `jdk8` specify the test as `jdk/test/sun/security/krb5/auto/ReplayCacheTestProc.java`
 and for `jdk11+` specify the test as `test/jdk/sun/security/krb5/auto/ReplayCacheTestProc.java`
-(the top level 'jdk' and 'test' directories are reversed.
+(the top level 'jdk' and 'test' directories are reversed).
 
 3. To make changes to the test case code and then rerun via a grinder:
 
@@ -120,16 +120,16 @@ In many cases you will want to add some code to get more information from the fa
 - Make some changes in your branch
 - Commit your changes and push them to your fork
 - Rerun the test in a Grinder, this time telling the Grinder job to use your fork / branch
-  - In the 'Test Repositories Parameters' section of https://ci.adoptopenjdk.net/view/Test_grinder/job/Grinder/build, change the parameter
-  - So if you had changed an openjdk test, you would set JDK_REPO to you github repository fork and JDK_BRANCH to the name of the branch with your changes.
+  - In the 'Test Repositories Parameters' section of https://ci.adoptopenjdk.net/view/Test_grinder/job/Grinder/build, change the parameter for the repository you have changed to your fork / branch
+    - e.g. If you have changed an openjdk test, you would set JDK_REPO to your github repository fork and JDK_BRANCH to the name of the branch with your changes.
   - When the job runs the tests will be retrieved from your fork / branch rather than the default openjdk source branch
-  - If you had added Systemout.println() statements to the test (and the test fails) your new outpt will appear in the Grinder job log
+  - If you had added `System.out.println()` statements to the test (and the test fails) your new output will appear in the Grinder job log
 
 #### Is it the jdk?
 
 If you can't find anything wrong with the test case, then maybe the jdk has a bug.
 
-The jdk itself can be forked and modified and built at AdoptOpenJDK by adding build parameters to the jdk build pipeline job - e.g. In https://ci.adoptopenjdk.net/job/build-scripts/job/openjdk8-pipeline/build
+The jdk itself can be forked, modified and built at AdoptOpenJDK by adding build parameters to the jdk build pipeline job - e.g. In https://ci.adoptopenjdk.net/job/build-scripts/job/openjdk8-pipeline/build
 - Specify the platform(s) you want to build
 - Set 'releaseType' to 'Nightly without Publish' (this means the build will be attached to the job, but not be published to github)
 - For the BUILD_ARGS param, specify '-b your_branch -r your_repository' (make sure your_repository is http: protocol, and does not have '.git' on the end)
