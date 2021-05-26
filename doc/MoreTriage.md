@@ -46,6 +46,7 @@ If it's not already known, raise an issue:
 - If it's obviously a machine which needs fixing, raise in https://github.com/adoptium/infrastructure/issues
 - If it's obviously an eclipse-openj9 issue (doesn't fail on hotspot) - raise in https://github.com/eclipse-openj9/openj9/issues
 - If it's a systemtest issue, raise in https://github.com/adoptium/aqa-systemtest
+- If it's not one of the above,  raise in https://github.com/adoptium/aqa-tests
 
 If it is already known:
 - Are you able to add any more information to the existing issue which might help in debugging the failure?
