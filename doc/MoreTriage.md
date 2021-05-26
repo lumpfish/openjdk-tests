@@ -186,5 +186,6 @@ Some search 'techniques':
 - It doesn't cover all the search patterns listed above yet (primarily uses `test target`), but it does search multiple repositories at once.
 2. Search directly in github
 - The issues in individual repositories can be searched using the github web interface. github search is not necessarily intuitive (a search for `replaycachetestproc` will find an issue which mentions test `sun/security/krb5/auto/ReplayCacheTestProc.java` but a search for `replaycache` will not). It is possible to search multiple git repositories at once - see https://docs.github.com/en/github/searching-for-information-on-github/searching-on-github/searching-issues-and-pull-requests
-3. Google
-- Also works, good for finding issues in the openjdk bugs database (https://bugs.openjdk.java.net/projects/JDK/issues).
+3. Internet search engine
+- Also works!
+- Good for finding issues in the openjdk bugs database (https://bugs.openjdk.java.net/projects/JDK/issues).
