@@ -10,6 +10,9 @@
 - Use the various TRSS views and / or Jenkins job logs to locate failing tests
   - The TRSS 'Test suite analysis' view (click the coloured block for the job in the 'Grid' view) has some 'Action' icons.  Use 'Deep history' and 'All platforms' to help see whether the failure is restricted just certain machines or platforms. There is also an Action icon to take you to the Jenkins job which ran the test.
 - For openjdk tests, there are many tests within a test target. If the test target has failed you need to look for "TEST: " in the job log to find the failing test(s).
+- Some tests jobs are run with the 'Parallel jobs' feature enabled, where the test suite is dynamically split into multiple jobs to minimise overall execution time.
+  - In this case the apparent test job is actually a job which launches the parallel sub-jobs - and these are the jobs which contain the test output (for the tests allocated to that sub-job.
+  - The TRSS 'Test suite analysis' view collates the results for all the sub-jobs (so the view is still a view for the whole test suite), and the 'Jenkins link' for the individual test targets is a link to the correct sub-job for that target.
 - Do a quick review of all the test failures for a build - you are looking for an overall appreciation of what is failing
   - Are the same tests failing everywhere (may indicate an infrastructure issue, may indicate a cross platform regression, may indicate a new / changed test which doesn't work, or doesn't work in our environment) or are they unique to a platform / release (indicates machine / platform specific setup issues, platform / release specific test case issues or actual jdk issues)
 - When you've honed in (what looks like) a single problem.....
